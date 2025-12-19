@@ -91,24 +91,92 @@
 @endsection
 
 @push('scripts')
+<style>
+  .error {
+    color: #d32f2f;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .field input.error-border,
+  .field textarea.error-border,
+  .field select.error-border {
+    border-color: #d32f2f;
+    background: #fdecea;
+  }
+</style>
+
 <script>
 document.getElementById("studentForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // ป้องกันการส่งฟอร์มจริง
+    event.preventDefault();
+
+    // ลบ error เดิมก่อน
+    document.querySelectorAll(".error").forEach(el => el.remove());
+    document.querySelectorAll(".error-border").forEach(el => el.classList.remove("error-border"));
+
+    let valid = true;
+
+    function showError(id, message) {
+        let field = document.getElementById(id);
+        field.classList.add("error-border");
+        let span = document.createElement("span");
+        span.className = "error";
+        span.innerText = message;
+        field.parentNode.appendChild(span);
+        valid = false;
+    }
 
     let firstName = document.getElementById("firstName").value.trim();
-    let lastName = document.getElementById("lastName").value.trim();
-    let dob = document.getElementById("dob").value;
-    let age = document.getElementById("age").value;
-    let gender = document.querySelector('input[name="gender"]:checked');
-    let picture = document.getElementById("picture").files.length;
-    let address = document.getElementById("address").value.trim();
-    let favoriteColor = document.getElementById("favoriteColor").value;
-    let music = document.querySelector('input[name="music"]:checked');
-    let consent = document.getElementById("consent").checked;
+    if (!firstName) showError("firstName", "กรุณากรอกชื่อ");
 
-    if (!firstName || !lastName || !dob || !age || !gender || picture === 0 || !address || !favoriteColor || !music || !consent) {
-        alert("❌ กรุณากรอกข้อมูลให้ครบทุกช่อง");
-    } else {
+    let lastName = document.getElementById("lastName").value.trim();
+    if (!lastName) showError("lastName", "กรุณากรอกนามสกุล");
+
+    let dob = document.getElementById("dob").value;
+    if (!dob) showError("dob", "กรุณาเลือกวันเกิด");
+
+    let age = document.getElementById("age").value;
+    if (!age) showError("age", "กรุณากรอกอายุ");
+
+    let gender = document.querySelector('input[name="gender"]:checked');
+    if (!gender) {
+        let group = document.querySelector('input[name="gender"]').parentNode.parentNode;
+        let span = document.createElement("span");
+        span.className = "error";
+        span.innerText = "กรุณาเลือกเพศ";
+        group.appendChild(span);
+        valid = false;
+    }
+
+    let picture = document.getElementById("picture").files.length;
+    if (picture === 0) showError("picture", "กรุณาอัปโหลดรูปภาพ");
+
+    let address = document.getElementById("address").value.trim();
+    if (!address) showError("address", "กรุณากรอกที่อยู่");
+
+    let favoriteColor = document.getElementById("favoriteColor").value;
+    if (!favoriteColor) showError("favoriteColor", "กรุณาเลือกสีที่ชอบ");
+
+    let music = document.querySelector('input[name="music"]:checked');
+    if (!music) {
+        let group = document.querySelector('input[name="music"]').parentNode.parentNode;
+        let span = document.createElement("span");
+        span.className = "error";
+        span.innerText = "กรุณาเลือกแนวเพลงที่ชอบ";
+        group.appendChild(span);
+        valid = false;
+    }
+
+    let consent = document.getElementById("consent").checked;
+    if (!consent) {
+        let field = document.getElementById("consent").parentNode;
+        let span = document.createElement("span");
+        span.className = "error";
+        span.innerText = "กรุณาติ๊กยินยอมให้เก็บข้อมูล";
+        field.appendChild(span);
+        valid = false;
+    }
+
+    if (valid) {
         alert("✅ ข้อมูลถูกต้อง กรอกครบทุกช่องแล้ว");
     }
 });
