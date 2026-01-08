@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\PokedexController;
 
 // เมื่อเข้าหน้าแรกให้ Redirect ไปที่หน้าฟอร์ม
 Route::redirect('/', '/workshop/html-form');
@@ -11,3 +12,7 @@ Route::get('/workshop/html-form', [WorkshopController::class, 'index'])->name('w
 
 // หน้ารับค่าจากฟอร์มเพื่อประมวลผล
 Route::post('/workshop/html-form', [WorkshopController::class, 'store'])->name('workshop.store');
+
+Route::resource('/flights', App\Http\Controllers\FlightController::class);
+
+Route::resource('/pokedex', PokedexController::class);
