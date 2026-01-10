@@ -22,7 +22,7 @@
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-primary">🔴 Pokedex Management</h2>
+        <h2 class="fw-bold text-primary"> Pokedex Management</h2>
         <a href="{{ route('pokedex.create') }}" class="btn btn-success shadow-sm">
             + เพิ่มโปเกมอนใหม่
         </a>
